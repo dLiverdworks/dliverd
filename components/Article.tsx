@@ -39,7 +39,7 @@ const Article: React.FC<Props> = ({
                 <p className="font-sans text-sm text-slate-400">{formattedDate}</p>
             </div>
 
-            <div className="flex items-center mb-8">
+            <div className="flex items-center mb-8 mt-2">
                 <div className="mr-10">
                     <h1 className="font-sans text-slate-900 font-semibold text-2xl mb-4">
                         {title}

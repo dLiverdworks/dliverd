@@ -1,17 +1,25 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MdSearch } from "react-icons/md";
 import Button from "./Button";
 import AccountDropdown from "./AccountDropdown";
+import { useSearchParams, useRouter } from "next/navigation";
 
 type Props = {};
 
 const NavBar: React.FC<Props> = () => {
     const [keyword, setKeyword] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
     const isLoggedIn = true
+
+    useEffect(() => {
+        const queryKeyword = searchParams.get("keyword") || "";
+        setKeyword(queryKeyword);
+    }, [searchParams]);
 
     return (
         <header className="h-16 border-b border-slate-200 flex items-center justify-between px-24">
@@ -27,6 +35,11 @@ const NavBar: React.FC<Props> = () => {
                     placeholder="Search" 
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            router.push(`/search?keyword=${keyword}`);
+                        }
+                    }}
                 />
             </div>
 

@@ -1,19 +1,17 @@
-import NavBar from "../../components/NavBar";
-import Article from "../../components/Article";
-import Category from './../../components/Category';
-import Link from "next/link";
+"use client";
+import { useEffect } from "react";
+import Head from "next/head";
+import NavBar from "../../../components/NavBar";
+import Article from "../../../components/Article";
+import Category from './../../../components/Category';
+import { useSearchParams } from "next/navigation";
 
-export const metadata = {
-  title: "Dliverd",
-};
 
-const categories = [...Array(10)].map((_, index) => {
-  return {
-    id: index + 1,
-    slug: "technology",
-    name: "Technology",
-  };
-});
+// export const metadata = {
+//   title: "Results for {router.query.keyword}" | "Dliverd",
+// };
+
+// const router = useRouter();
 
 const articles = [...Array(5)].map((_, index) => {
   return {
@@ -31,7 +29,14 @@ const articles = [...Array(5)].map((_, index) => {
   };
 });
 
-export default function Home() {
+export default function SearchPage() {
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("keyword") || "";
+
+  useEffect(() => {
+      document.title = `Results for ${keyword} | Dliverd`;
+    }, [keyword]);
+
   return (
     <div>
       <NavBar />
@@ -39,14 +44,8 @@ export default function Home() {
         
         <div className="w-[720px] mx-auto py-24">
           <div className="mb-16">
-            <p className="font-sans text-slate-900 text-sm mb-4">Your Categories</p>
-            <div className="flex flex-wrap gap-3">
-              {categories.map((category) => (
-                <Link key={category.id} href={`/categories/${category.slug}`}>
-                  <Category label={category.name} />
-                </Link>
-              ))}
-            </div>
+            <p className="font-sans font-bold text-slate-400 mb-3">Results for</p>
+            <p className="font-sans font-bold text-slate-900 text-5xl">{keyword}</p>
           </div>
 
           {articles.map((article) => (

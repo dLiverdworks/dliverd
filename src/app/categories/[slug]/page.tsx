@@ -1,19 +1,18 @@
-import NavBar from "../../components/NavBar";
-import Article from "../../components/Article";
-import Category from './../../components/Category';
-import Link from "next/link";
+import NavBar from "../../../../components/NavBar";
+import Article from "../../../../components/Article";
+import Category from '../../../../components/Category';
 
-export const metadata = {
-  title: "Dliverd",
-};
 
-const categories = [...Array(10)].map((_, index) => {
+interface Props {
+  params: { slug: string };
+}
+
+export async function generateMetadata({ params }: Props) {
   return {
-    id: index + 1,
-    slug: "technology",
-    name: "Technology",
+    title: `${params.slug} | Dliverd`,
   };
-});
+}
+
 
 const articles = [...Array(5)].map((_, index) => {
   return {
@@ -30,8 +29,9 @@ const articles = [...Array(5)].map((_, index) => {
     },
   };
 });
-
-export default function Home() {
+export default function CategoryArticlesPage({ params }: Props) {
+  const { slug } = params;
+  
   return (
     <div>
       <NavBar />
@@ -39,14 +39,8 @@ export default function Home() {
         
         <div className="w-[720px] mx-auto py-24">
           <div className="mb-16">
-            <p className="font-sans text-slate-900 text-sm mb-4">Your Categories</p>
-            <div className="flex flex-wrap gap-3">
-              {categories.map((category) => (
-                <Link key={category.id} href={`/categories/${category.slug}`}>
-                  <Category label={category.name} />
-                </Link>
-              ))}
-            </div>
+            <p className="font-sans font-bold text-slate-400 mb-3">Category</p>
+            <p className="font-sans font-bold text-slate-900 text-5xl">Technology</p>
           </div>
 
           {articles.map((article) => (
