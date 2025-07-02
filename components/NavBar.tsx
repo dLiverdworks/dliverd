@@ -6,9 +6,11 @@ import Button from "./Button";
 import AccountDropdown from "./AccountDropdown";
 import { useSearchParams, useRouter } from "next/navigation";
 
-type Props = {};
+type Props = {
+    hasSearchInput?: boolean
+};
 
-const NavBar: React.FC<Props> = () => {
+const NavBar: React.FC<Props> = ({hasSearchInput = true}) => {
     const [keyword, setKeyword] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const searchParams = useSearchParams();
@@ -27,21 +29,23 @@ const NavBar: React.FC<Props> = () => {
                 <img src="/images/logo-with-text.svg" className="h-8"/>
             </Link>
 
-            <div className="w-[720px] absolute left-1/2 -translate-x-1/2 flex items-center">
-                <MdSearch className="text-slate-400 mr-4" size={24} />
-                <input 
-                    className="font-sans text-sm placeholder-slate-400 text-slate-900 outline-none"
-                    type="text" 
-                    placeholder="Search" 
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            router.push(`/search?keyword=${keyword}`);
-                        }
-                    }}
-                />
-            </div>
+            {hasSearchInput && (
+                <div className="w-[720px] absolute left-1/2 -translate-x-1/2 flex items-center">
+                    <MdSearch className="text-slate-400 mr-4" size={24} />
+                    <input 
+                        className="font-sans text-sm placeholder-slate-400 text-slate-900 outline-none"
+                        type="text" 
+                        placeholder="Search" 
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                router.push(`/search?keyword=${keyword}`);
+                            }
+                        }}
+                    />
+                </div>
+            )}
 
             {isLoggedIn && (
                 <div className="relative">
