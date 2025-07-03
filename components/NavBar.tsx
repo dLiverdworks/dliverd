@@ -7,10 +7,14 @@ import AccountDropdown from "./AccountDropdown";
 import { useSearchParams, useRouter } from "next/navigation";
 
 type Props = {
-    hasSearchInput?: boolean
+    hasSearchInput?: boolean;
+    hasSubmitButton?: boolean;
+    isSubmitDisabled?: boolean;
+    submitLabel?: string;
+    onClickSubmit?: () => void
 };
 
-const NavBar: React.FC<Props> = ({hasSearchInput = true}) => {
+const NavBar: React.FC<Props> = ({hasSearchInput = true, hasSubmitButton, isSubmitDisabled, submitLabel, onClickSubmit}) => {
     const [keyword, setKeyword] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const searchParams = useSearchParams();
@@ -47,7 +51,17 @@ const NavBar: React.FC<Props> = ({hasSearchInput = true}) => {
                 </div>
             )}
 
-            {isLoggedIn && (
+            <div className="flex items-center">
+                {hasSubmitButton && (
+                    <>
+                        <Button type="button" disabled={isSubmitDisabled} onClick={onClickSubmit}>
+                            {submitLabel}
+                        </Button>
+                        <div className="w-6"/>
+                    </>
+                )} 
+
+                {isLoggedIn && (
                 <div className="relative">
                     <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                         <img 
@@ -64,7 +78,8 @@ const NavBar: React.FC<Props> = ({hasSearchInput = true}) => {
                 <Link href="/auth/sign-in">
                         <Button>Sign In</Button>
                 </Link>
-            )}  
+            )}
+            </div>  
         </header>
     );
 };
