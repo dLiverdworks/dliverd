@@ -22,6 +22,17 @@ const NavBar: React.FC<Props> = ({hasSearchInput = true, hasSubmitButton, isSubm
 
     const isLoggedIn = true
 
+    const user = {
+        fullname: "John Doe",
+        email: "john.doe@gmail.com",
+        photo: "/images/dummy-avatar.png",
+    }
+
+    const initialFullName = user.fullname
+        .split(" ")
+        .map((word) => word[0].toUpperCase())
+        .join("");
+
     useEffect(() => {
         const queryKeyword = searchParams.get("keyword") || "";
         setKeyword(queryKeyword);
@@ -64,11 +75,19 @@ const NavBar: React.FC<Props> = ({hasSearchInput = true, hasSubmitButton, isSubm
                 {isLoggedIn && (
                 <div className="relative">
                     <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                        {!!user.photo && (
                         <img 
                             className="w-10 h-10 rounded-full object-cover"
-                            src="/images/dummy-avatar.png" 
-                            alt="John Doe" 
+                            src={user.photo} 
+                            alt={user.fullname} 
                         />
+                        )}
+
+                        {!user.photo && (
+                            <div className="w-10 h-10 rounded-full bg-blue-800 flex justify-center items-center">
+                                <p className="font-bold font-sans text-white">{initialFullName}</p>
+                            </div>
+                        )}
                     </button>
                     
                     {isDropdownOpen && <AccountDropdown />}
